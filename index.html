@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComicCraft - Create Your Comic</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Poppins', sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height:100vh;
+  color:#fff;
+  overflow-x:hidden;
+}
+.hero {
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+}
+.bg-shapes::before{
+  content:"";
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255,215,0,0.15) 0%, transparent 40%),
+                    radial-gradient(circle at 80% 70%, rgba(255,69,0,0.15) 0%, transparent 40%);
+  z-index:0;
+}
+.card {
+  position:relative; z-index:1;
+  background: rgba(255,255,255,0.97);
+  color:#1a1a2e;
+  width:100%; max-width:650px;
+  border-radius:20px;
+  padding:35px 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  border: 3px solid #FFD700;
+}
+.logo {
+  text-align:center; margin-bottom:25px;
+}
+.logo h1 {
+  font-family:'Bangers', cursive;
+  font-size:52px;
+  letter-spacing:2px;
+  color:#0f3460;
+  text-shadow: 3px 3px 0 #FFD700;
+}
+.logo p { color:#666; font-size:14px; margin-top:5px; }
+.form-group { margin-bottom:18px; }
+.form-group label { display:block; font-weight:600; margin-bottom:6px; font-size:14px; color:#16213e; }
+.form-group input, .form-group select, .form-group textarea {
+  width:100%; padding:12px 14px; border-radius:10px; border:2px solid #e0e0e0;
+  font-family:'Poppins', sans-serif; font-size:14px; transition:0.3s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color:#0f3460; outline:none; box-shadow:0 0 0 3px rgba(15,52,96,0.1);
+}
+.form-group textarea { min-height:90px; resize:vertical; }
+.row { display:flex; gap:15px; }
+.row .form-group { flex:1; }
+.btn {
+  width:100%; padding:15px; border:none; border-radius:12px;
+  background: linear-gradient(90deg, #FF512F, #DD2476);
+  color:#fff; font-weight:700; font-size:16px; letter-spacing:0.5px;
+  cursor:pointer; transition:0.3s; margin-top:10px;
+  font-family:'Bangers', cursive; font-size:22px; letter-spacing:2px;
+  box-shadow: 0 6px 20px rgba(221,36,118,0.4);
+}
+.btn:hover { transform: translateY(-2px); box-shadow:0 10px 30px rgba(221,36,118,0.6); }
+.hint { font-size:11px; color:#888; margin-top:4px; }
+.badge {
+  display:inline-block; background:#0f3460; color:#FFD700; padding:4px 10px;
+  border-radius:20px; font-size:11px; font-weight:700; margin-bottom:10px;
+}
+.features { display:flex; gap:10px; margin-top:20px; justify-content:center; flex-wrap:wrap; }
+.features span { background:#f0f0f0; padding:6px 12px; border-radius:20px; font-size:11px; color:#333; }
+.loading { display:none; text-align:center; padding:20px; }
+.spinner {
+  border:4px solid #f3f3f3; border-top:4px solid #DD2476; border-radius:50%;
+  width:40px; height:40px; animation:spin 1s linear infinite; margin:0 auto 10px;
+}
+@keyframes spin { 0% {transform:rotate(0deg);} 100% {transform:rotate(360deg);} }
+</style>
+</head>
+<body>
+<div class="hero">
+<div class="bg-shapes"></div>
+<div class="card">
+  <div class="logo">
+    <div class="badge">⚡ POWERED BY GEMINI + STABLE DIFFUSION</div>
+    <h1>ComicCraft</h1>
+    <p>Turn your imagination into a 5-panel comic masterpiece</p>
+  </div>
+
+  <form id="comicForm" action="/generate" method="post" onsubmit="showLoading()">
+    <div class="form-group">
+      <label>📖 Story Prompt *</label>
+      <textarea name="prompt" required placeholder="E.g., A brave fox exploring an enchanted forest to find a lost star...">A brave fox exploring an enchanted forest</textarea>
+      <div class="hint">Describe your story idea — the more vivid, the better!</div>
+    </div>
+
+    <div class="form-group">
+      <label>🦸 Main Character Name *</label>
+      <input type="text" name="character_name" required placeholder="E.g., Zara, Kiko the Fox" value="Kiko the Fox">
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>🌍 Setting</label>
+        <select name="setting">
+          <option value="forest">🌲 Forest</option>
+          <option value="school">🏫 School</option>
+          <option value="space">🚀 Space</option>
+          <option value="city">🏙️ City</option>
+          <option value="ocean">🌊 Ocean</option>
+          <option value="desert">🏜️ Desert</option>
+          <option value="castle">🏰 Castle</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>🎭 Tone</label>
+        <select name="tone">
+          <option value="dramatic">🎬 Dramatic</option>
+          <option value="funny">😂 Funny</option>
+          <option value="light-hearted">😊 Light-hearted</option>
+          <option value="poetic">🌸 Poetic</option>
+          <option value="mysterious">🕵️ Mysterious</option>
+          <option value="adventurous">⚔️ Adventurous</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>🎨 Art Style</label>
+      <select name="art_style">
+        <option value="comic book">💥 Comic Book (Classic)</option>
+        <option value="anime">🎌 Anime</option>
+        <option value="pixel art">👾 Pixel Art</option>
+        <option value="realistic">📸 Realistic</option>
+        <option value="cartoon">🎨 Cartoon</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn">✨ GENERATE MY COMIC</button>
+  </form>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p style="font-weight:600;">Crafting your comic...<br><span style="font-size:12px;color:#666;">Generating story with Gemini & images with Stable Diffusion (30-60s)</span></p>
+  </div>
+
+  <div class="features">
+    <span>📚 5 Panels</span>
+    <span>🤖 Gemini 1.5</span>
+    <span>🎨 Stable Diffusion</span>
+    <span>📄 PDF Export</span>
+  </div>
+</div>
+</div>
+
+<script>
+function showLoading(){
+  document.getElementById('comicForm').style.display='none';
+  document.getElementById('loading').style.display='block';
+}
+</script>
+</body>
+</html>

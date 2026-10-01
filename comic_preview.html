@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Comic - ComicCraft</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600&family=Comic+Neue:wght@400;700&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Poppins', sans-serif; background:#0f0f1a; color:#fff; }
+.header {
+  background: linear-gradient(90deg, #FF512F, #DD2476);
+  padding:20px; text-align:center; position:sticky; top:0; z-index:100;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+.header h1 { font-family:'Bangers', cursive; font-size:36px; letter-spacing:2px; }
+.header p { font-size:13px; opacity:0.9; }
+.container { max-width:900px; margin:30px auto; padding:0 20px; }
+.actions {
+  display:flex; gap:15px; justify-content:center; margin:25px 0; flex-wrap:wrap;
+}
+.btn {
+  padding:12px 22px; border-radius:10px; border:none; font-weight:700; cursor:pointer;
+  text-decoration:none; display:inline-block; transition:0.3s; font-size:14px;
+}
+.btn-primary { background:#FFD700; color:#111; }
+.btn-secondary { background:#2a2a4a; color:#fff; border:1px solid #444; }
+.btn:hover { transform:translateY(-2px); }
+.comic-grid { display:flex; flex-direction:column; gap:35px; }
+.panel {
+  background:#fff; color:#111; border-radius:16px; overflow:hidden;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5); border:4px solid #222;
+}
+.panel-header {
+  background:#111; color:#FFD700; padding:12px 20px; display:flex; justify-content:space-between; align-items:center;
+}
+.panel-header h3 { font-family:'Bangers', cursive; font-size:22px; letter-spacing:1px; }
+.panel-header span { background:#FFD700; color:#111; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:700; }
+.panel-image { width:100%; background:#f5f5f5; display:flex; justify-content:center; }
+.panel-image img { width:100%; max-height:520px; object-fit:contain; display:block; }
+.panel-body { padding:20px 24px; }
+.scene { font-family:'Comic Neue', cursive; font-style:italic; background:#FFF9C4; padding:10px 14px; border-left:4px solid #FFD700; border-radius:6px; margin-bottom:15px; color:#333; }
+.meta { display:grid; grid-template-columns:1fr; gap:12px; }
+.caption { font-weight:700; color:#DD2476; }
+.narration { line-height:1.7; font-size:15px; color:#222; background:#f9f9f9; padding:12px; border-radius:8px; }
+.prompt-ref {
+  margin-top:12px; font-size:11px; color:#888; background:#f0f0f0; padding:8px 10px; border-radius:6px;
+  font-family:monospace;
+}
+.footer-note { text-align:center; margin:50px 0; color:#888; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🎉 Your Comic is Ready!</h1>
+  <p>Starring <strong>{{ character }}</strong> • Prompt: "{{ prompt }}"</p>
+</div>
+
+<div class="container">
+  <div class="actions">
+    <a href="/download-pdf/{{ pdf_filename }}" class="btn btn-primary">📄 Download PDF</a>
+    <a href="/export-success" class="btn btn-primary" style="background:#fff;">✅ Export Success Page</a>
+    <a href="/" class="btn btn-secondary">🔄 Create Another Comic</a>
+  </div>
+
+  <div class="comic-grid">
+    {% for panel in layout %}
+    <div class="panel">
+      <div class="panel-header">
+        <h3>Panel {{ panel.panel_number }}: {{ panel.title }}</h3>
+        <span>#{{ panel.panel_number }}</span>
+      </div>
+      <div class="panel-image">
+        <img src="{{ panel.web_image_path }}" alt="{{ panel.title }}" onerror="this.src='https://via.placeholder.com/512?text=Image+Not+Found'">
+      </div>
+      <div class="panel-body">
+        <div class="scene">🎬 {{ panel.scene_description }}</div>
+        <div class="meta">
+          <div class="caption">📢 Caption: {{ panel.caption }}</div>
+          <div class="narration">💬 {{ panel.narration }}</div>
+        </div>
+        <div class="prompt-ref">🎨 Image Prompt: {{ panel.image_prompt }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="actions" style="margin-top:40px;">
+    <a href="/download-pdf/{{ pdf_filename }}" class="btn btn-primary">📄 Download Your Comic as PDF</a>
+    <a href="/" class="btn btn-secondary">✨ Go Create Another Comic</a>
+  </div>
+
+  <div class="footer-note">
+    Generated with ❤️ by ComicCraft — Gemini Flash + Pro + Stable Diffusion<br>
+    PDF saved at: {{ pdf_path }}
+  </div>
+</div>
+</body>
+</html>

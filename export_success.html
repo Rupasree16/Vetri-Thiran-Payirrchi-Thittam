@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Export Success - ComicCraft</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600&display=swap');
+body { margin:0; font-family:'Poppins', sans-serif; background: linear-gradient(135deg, #0f3460, #16213e); min-height:100vh; display:flex; align-items:center; justify-content:center; color:#fff; }
+.card { background:#fff; color:#111; max-width:500px; width:90%; padding:40px; border-radius:20px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+.icon { font-size:70px; margin-bottom:15px; }
+h1 { font-family:'Bangers', cursive; font-size:42px; color:#0f3460; letter-spacing:1px; }
+p { color:#555; margin:15px 0; line-height:1.6; }
+.btn { display:inline-block; padding:14px 26px; border-radius:10px; background: linear-gradient(90deg, #FF512F, #DD2476); color:#fff; text-decoration:none; font-weight:700; margin:10px 5px; transition:0.3s; }
+.btn-secondary { background:#f0f0f0; color:#111; }
+.btn:hover { transform:translateY(-2px); }
+.file { background:#f9f9f9; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; margin:15px 0; word-break:break-all; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🎉</div>
+  <h1>Export Successful!</h1>
+  <p>Your AI-powered comic has been successfully created and is ready for download.</p>
+  {% if pdf_filename %}
+  <div class="file">📄 {{ pdf_filename }}</div>
+  <a href="/download-pdf/{{ pdf_filename }}" class="btn">📥 Download Again</a>
+  {% endif %}
+  <p style="font-size:13px; color:#888;">You can save, print, or share your comic in professional PDF format.</p>
+  <div style="margin-top:25px;">
+    <a href="/" class="btn">✨ Go Create Another Comic</a>
+    <a href="/docs" class="btn btn-secondary">🔧 API Docs</a>
+  </div>
+</div>
+</body>
+</html>
